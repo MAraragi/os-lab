@@ -1,0 +1,23 @@
+1.
+Which registers contain arguments to functions? For example, which register holds 13 in main's call to printf?
+函数的参数保存在寄存器a0-a7里面。
+在main对printf的调用中，寄存器a2保存13。
+2.
+Where is the call to function f in the assembly code for main? Where is the call to g? (Hint: the compiler may inline functions.)
+main中没有直接调用f的代码，编译器将g内联至f中，又将f内联到main中，产生函数调用的结果。
+3.
+At what address is the function printflocated?
+通过寻找可知函数printf()的地址为0x64a。
+4.
+What value is in the register rajust after the jalrto printfin main?
+jalr会将pc+4即下条指令的地址的值存储到当前寄存器，所以在jalr到main中的printf之后，寄存器ra中存储的值是0x38。
+5.
+Run the following code.
+unsigned int i= 0x00646c72;
+printf("H%xWo%s", 57616, &i);
+What is the output? Here's an ASCII table that maps bytes to characters.
+The output depends on that fact that the RISC-V is little-endian. If the RISC-V were instead big-endian what would you set ito in order to yield the same output? Would you need to change 57616 to a different value?
+%x表示按十六进制输出，%s表示从指定地址向后输出字符直到遇见\0。
+57616的十六进制表示为e110，而0x00646c72按照小端排序其内容为72 6c 64 00，即rld\0。
+①输出为He110 World
+②如果RISC-V是大端排序，可以将i的值更改为0x726c6400，不需要更改57616。
